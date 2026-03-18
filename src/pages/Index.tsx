@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/ui/icon";
-import GuestMenuSection from "@/components/GuestMenuSection";
 
 type IconName = React.ComponentProps<typeof Icon>["name"];
 
@@ -48,9 +47,66 @@ function Divider() {
   );
 }
 
+const GUEST_ORDER_URL = "https://functions.poehali.dev/eecccb17-ab4d-4755-9f80-b05e364a831a";
+
+const HOT_DISHES = [
+  { id: "halibut", label: "Стейк из палтуса с рисом", emoji: "🐟", desc: "Нежный стейк из палтуса с ароматным рисом" },
+  { id: "pork", label: "Стейк из свинины на углях", emoji: "🥩", desc: "Сочный стейк на углях с картофельными дольками" },
+  { id: "lamb", label: "Седло ягнёнка со спаржей гриль", emoji: "🍖", desc: "Изысканное седло ягнёнка с запечённой спаржей" },
+  { id: "bulgogi", label: "Пульгоги", emoji: "🥢", desc: "Корейская говядина в маринаде с овощами" },
+];
+
+const ALCOHOL_OPTIONS = [
+  { id: "cognac", label: "Коньяк", emoji: "🥃" },
+  { id: "vodka", label: "Водка", emoji: "🍸" },
+  { id: "wine_red", label: "Вино красное полусладкое", emoji: "🍷" },
+  { id: "wine_rose", label: "Розовое полусухое", emoji: "🌸" },
+  { id: "champagne_sweet", label: "Шампанское сладкое", emoji: "🥂" },
+  { id: "champagne_semi", label: "Шампанское полусухое", emoji: "🍾" },
+  { id: "none", label: "Не пью", emoji: "🧃" },
+];
+
 function RSVPForm() {
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: "", guests: "1", coming: "yes", wishes: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [coming, setComing] = useState("yes");
+  const [name, setName] = useState("");
+  const [guests, setGuests] = useState("1");
+  const [hotDish, setHotDish] = useState("");
+  const [alcohol, setAlcohol] = useState<string[]>([]);
+  const [wish, setWish] = useState("");
+
+  function toggleAlcohol(id: string) {
+    setAlcohol(prev => prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim()) { setError("Пожалуйста, укажите ваше имя"); return; }
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch(GUEST_ORDER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          guest_name: name,
+          coming,
+          guests_count: parseInt(guests),
+          hot_dish: hotDish,
+          alcohol: alcohol.map(id => ALCOHOL_OPTIONS.find(a => a.id === id)?.label || id),
+          wish,
+        }),
+      });
+      if (res.ok) setSubmitted(true);
+      else setError("Что-то пошло не так, попробуйте снова");
+    } catch {
+      setError("Ошибка соединения, попробуйте снова");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   if (submitted) {
     return (
@@ -62,59 +118,84 @@ function RSVPForm() {
   }
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="max-w-lg mx-auto space-y-5">
-      <div>
-        <label className="block font-cormorant-sc text-sm tracking-widest text-rose/80 mb-2">Ваше имя</label>
-        <input
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          required
-          placeholder="Иван Петров"
-          className="w-full border border-gold/40 bg-ivory/60 rounded px-4 py-3 font-cormorant text-lg text-deep-rose placeholder-rose/30 focus:outline-none focus:border-gold transition-colors"
-        />
-      </div>
-      <div>
-        <label className="block font-cormorant-sc text-sm tracking-widest text-rose/80 mb-2">Количество гостей</label>
-        <select
-          value={form.guests}
-          onChange={(e) => setForm({ ...form, guests: e.target.value })}
-          className="w-full border border-gold/40 bg-ivory/60 rounded px-4 py-3 font-cormorant text-lg text-deep-rose focus:outline-none focus:border-gold transition-colors"
-        >
-          {["1", "2", "3", "4"].map((n) => (
-            <option key={n} value={n}>{n} {n === "1" ? "гость" : "гостя"}</option>
-          ))}
-        </select>
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-8">
+
+      {/* Придёте? */}
       <div>
         <label className="block font-cormorant-sc text-sm tracking-widest text-rose/80 mb-3">Вы придёте?</label>
         <div className="flex gap-4">
           {[{ val: "yes", label: "С радостью буду!" }, { val: "no", label: "К сожалению, нет" }].map((opt) => (
-            <button
-              key={opt.val}
-              type="button"
-              onClick={() => setForm({ ...form, coming: opt.val })}
-              className={`flex-1 py-3 rounded border font-cormorant text-lg transition-all duration-300 ${form.coming === opt.val ? "bg-rose text-ivory border-rose shadow-md" : "border-gold/40 text-rose hover:border-rose"}`}
-            >
+            <button key={opt.val} type="button" onClick={() => setComing(opt.val)}
+              className={`flex-1 py-3 rounded-xl border font-cormorant text-lg transition-all duration-300 ${coming === opt.val ? "bg-rose text-ivory border-rose shadow-md" : "border-gold/40 text-rose hover:border-rose"}`}>
               {opt.label}
             </button>
           ))}
         </div>
       </div>
+
+      {/* Имя */}
       <div>
-        <label className="block font-cormorant-sc text-sm tracking-widest text-rose/80 mb-2">Пожелания молодожёнам</label>
-        <textarea
-          value={form.wishes}
-          onChange={(e) => setForm({ ...form, wishes: e.target.value })}
-          rows={3}
-          placeholder="Ваши добрые слова..."
-          className="w-full border border-gold/40 bg-ivory/60 rounded px-4 py-3 font-cormorant text-lg text-deep-rose placeholder-rose/30 focus:outline-none focus:border-gold transition-colors resize-none"
-        />
+        <label className="block font-cormorant-sc text-sm tracking-widest text-rose/80 mb-2">Ваше имя *</label>
+        <input value={name} onChange={e => setName(e.target.value)} required placeholder="Иван Петров"
+          className="w-full border border-gold/40 bg-ivory/60 rounded-xl px-4 py-3 font-cormorant text-lg text-deep-rose placeholder-rose/30 focus:outline-none focus:border-rose/50 transition-colors" />
       </div>
-      <button
-        type="submit"
-        className="w-full py-4 bg-rose text-ivory font-cormorant-sc tracking-widest text-lg rounded hover:bg-deep-rose transition-all duration-300 shadow-md hover:shadow-lg"
-      >
-        Подтвердить присутствие
+
+      {/* Количество гостей */}
+      <div>
+        <label className="block font-cormorant-sc text-sm tracking-widest text-rose/80 mb-2">Количество гостей</label>
+        <select value={guests} onChange={e => setGuests(e.target.value)}
+          className="w-full border border-gold/40 bg-ivory/60 rounded-xl px-4 py-3 font-cormorant text-lg text-deep-rose focus:outline-none focus:border-rose/50 transition-colors">
+          {["1","2","3","4"].map(n => <option key={n} value={n}>{n} {n === "1" ? "гость" : "гостя"}</option>)}
+        </select>
+      </div>
+
+      {coming === "yes" && <>
+        {/* Горячее */}
+        <div>
+          <label className="block font-cormorant-sc text-sm tracking-widest text-rose/80 mb-3">Горячее блюдо</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {HOT_DISHES.map(dish => (
+              <button key={dish.id} type="button" onClick={() => setHotDish(hotDish === dish.label ? "" : dish.label)}
+                className={`text-left p-4 rounded-xl border transition-all duration-200 ${hotDish === dish.label ? "border-rose bg-rose/10 shadow-sm" : "border-gold/20 bg-white/40 hover:border-rose/40"}`}>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xl">{dish.emoji}</span>
+                  <span className="font-cormorant-sc text-sm text-deep-rose">{dish.label}</span>
+                  {hotDish === dish.label && <Icon name="Check" size={14} className="text-rose ml-auto" />}
+                </div>
+                <p className="font-cormorant text-rose/60 text-sm">{dish.desc}</p>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Напитки */}
+        <div>
+          <label className="block font-cormorant-sc text-sm tracking-widest text-rose/80 mb-3">Напитки (можно несколько)</label>
+          <div className="flex flex-wrap gap-2">
+            {ALCOHOL_OPTIONS.map(opt => (
+              <button key={opt.id} type="button" onClick={() => toggleAlcohol(opt.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border font-cormorant text-sm transition-all duration-200 ${alcohol.includes(opt.id) ? "border-rose bg-rose/10 text-deep-rose shadow-sm" : "border-gold/20 bg-white/40 text-rose/70 hover:border-rose/40"}`}>
+                <span>{opt.emoji}</span>{opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </>}
+
+      {/* Пожелание */}
+      <div>
+        <label className="block font-cormorant-sc text-sm tracking-widest text-rose/80 mb-2">Пожелание молодожёнам</label>
+        <textarea value={wish} onChange={e => setWish(e.target.value)} rows={4}
+          placeholder="Напишите тёплые слова для Анастасии и Артёма..."
+          className="w-full border border-gold/40 bg-ivory/60 rounded-xl px-4 py-3 font-cormorant text-lg text-deep-rose placeholder-rose/30 focus:outline-none focus:border-rose/50 transition-colors resize-none" />
+      </div>
+
+      {error && <p className="font-cormorant text-red-400 text-center">{error}</p>}
+
+      <button type="submit" disabled={loading}
+        className="w-full py-4 bg-rose text-ivory font-cormorant-sc tracking-widest text-lg rounded-xl hover:bg-deep-rose transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-60 flex items-center justify-center gap-2">
+        {loading ? <Icon name="Loader2" size={18} className="animate-spin" /> : <Icon name="Send" size={16} />}
+        {loading ? "Отправляем..." : "Подтвердить присутствие"}
       </button>
     </form>
   );
@@ -383,10 +464,7 @@ export default function Index() {
         </Section>
       </section>
 
-      {/* МЕНЮ И ПОЖЕЛАНИЯ */}
-      <GuestMenuSection />
-
-      {/* RSVP */}
+      {/* RSVP + МЕНЮ + ПОЖЕЛАНИЯ */}
       <section id="rsvp" className="py-20 px-6">
         <Section className="max-w-2xl mx-auto">
           <div className="text-center mb-14">
@@ -394,11 +472,12 @@ export default function Index() {
             <h2 className="font-cormorant-sc text-3xl md:text-4xl text-deep-rose">Подтвердите участие</h2>
             <Divider />
             <p className="font-cormorant text-lg text-rose/70">
-              Пожалуйста, подтвердите своё присутствие до 1 мая 2026 года.<br />
-              Это поможет нам всё идеально подготовить для вас.
+              Подтвердите присутствие, выберите меню и оставьте пожелание молодожёнам.
             </p>
           </div>
-          <RSVPForm />
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 border border-gold/20 shadow-sm">
+            <RSVPForm />
+          </div>
         </Section>
       </section>
 

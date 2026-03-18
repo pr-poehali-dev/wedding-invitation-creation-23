@@ -1,0 +1,3 @@
+ALTER TABLE t_p98537980_wedding_invitation_c.guest_orders
+  ADD COLUMN IF NOT EXISTS coming VARCHAR(10) DEFAULT 'yes',
+  ADD COLUMN IF NOT EXISTS guests_count INTEGER DEFAULT 1;

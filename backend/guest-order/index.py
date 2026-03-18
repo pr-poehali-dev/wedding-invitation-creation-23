@@ -3,7 +3,7 @@ import os
 import psycopg2
 
 def handler(event: dict, context) -> dict:
-    """Сохраняет выбор гостя: горячее, алкоголь и пожелание молодожёнам"""
+    """Сохраняет подтверждение участия гостя, выбор блюда, напитков и пожелание молодожёнам"""
     headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -17,7 +17,7 @@ def handler(event: dict, context) -> dict:
         conn = psycopg2.connect(os.environ['DATABASE_URL'])
         cur = conn.cursor()
         cur.execute("""
-            SELECT id, guest_name, hot_dish, alcohol, wish, created_at
+            SELECT id, guest_name, coming, guests_count, hot_dish, alcohol, wish, created_at
             FROM t_p98537980_wedding_invitation_c.guest_orders
             ORDER BY created_at DESC
         """)
@@ -28,10 +28,12 @@ def handler(event: dict, context) -> dict:
             {
                 'id': r[0],
                 'guest_name': r[1],
-                'hot_dish': r[2],
-                'alcohol': r[3] or [],
-                'wish': r[4],
-                'created_at': str(r[5]),
+                'coming': r[2],
+                'guests_count': r[3],
+                'hot_dish': r[4],
+                'alcohol': r[5] or [],
+                'wish': r[6],
+                'created_at': str(r[7]),
             }
             for r in rows
         ]
@@ -40,6 +42,8 @@ def handler(event: dict, context) -> dict:
     if event.get('httpMethod') == 'POST':
         body = json.loads(event.get('body') or '{}')
         guest_name = body.get('guest_name', '').strip()
+        coming = body.get('coming', 'yes')
+        guests_count = int(body.get('guests_count', 1))
         hot_dish = body.get('hot_dish', '').strip()
         alcohol = body.get('alcohol', [])
         wish = body.get('wish', '').strip()
@@ -53,9 +57,9 @@ def handler(event: dict, context) -> dict:
         cur = conn.cursor()
         cur.execute(
             """INSERT INTO t_p98537980_wedding_invitation_c.guest_orders
-               (guest_name, hot_dish, alcohol, wish)
-               VALUES (%s, %s, %s, %s) RETURNING id""",
-            (guest_name, hot_dish or None, alcohol_arr, wish or None)
+               (guest_name, coming, guests_count, hot_dish, alcohol, wish)
+               VALUES (%s, %s, %s, %s, %s, %s) RETURNING id""",
+            (guest_name, coming, guests_count, hot_dish or None, alcohol_arr, wish or None)
         )
         new_id = cur.fetchone()[0]
         conn.commit()
