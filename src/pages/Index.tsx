@@ -238,7 +238,7 @@ export default function Index() {
           <div className="relative">
             <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-gold/20 via-gold/50 to-gold/20 hidden md:block" />
             {[
-              { year: "2023", emoji: "🎶", title: "Встреча в ночном клубе", text: "Судьба свела нас в ночном клубе — один танец изменил всё. Именно тогда началась наша история." },
+              { year: "2023", emoji: "🎶", title: "Встреча в ночном клубе", text: "Судьба свела нас в ночном клубе — один танец изменил всё. Именно тогда началась наша история.", photo: "https://cdn.poehali.dev/projects/5f47c0fc-f12a-4e1c-a57b-fb5e9f136887/bucket/9be52300-5122-47a5-ba41-a90a8db16075.jpg" },
               { year: "2024", emoji: "🌴", title: "Первое путешествие", text: "В 2024 году мы вместе отправились в Таиланд — солнце, море и новые впечатления на двоих.", photo: "https://cdn.poehali.dev/projects/5f47c0fc-f12a-4e1c-a57b-fb5e9f136887/bucket/93d626c3-2cb2-4f28-afbc-1a03320e1270.jpg" },
               { year: "2025", emoji: "💍", title: "Предложение", text: "Во вторую поездку в Таиланд, на горе с потрясающим видом на острова, Артём сделал предложение. Анастасия сказала «да»!", photo: "https://cdn.poehali.dev/projects/5f47c0fc-f12a-4e1c-a57b-fb5e9f136887/bucket/180bd4f2-bff3-4de4-8662-16f4b98bb061.jpg" },
               { year: "2026", emoji: "🕊️", title: "День свадьбы", text: "И вот настал момент, когда две жизни сольются в одну — навсегда и с любовью." },
