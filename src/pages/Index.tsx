@@ -343,39 +343,28 @@ export default function Index() {
             <Divider />
           </div>
           <div className="bg-white/70 rounded-2xl overflow-hidden border border-gold/20 shadow-sm">
-            <div className="aspect-video bg-gradient-to-br from-sage/20 to-blush/40 flex flex-col items-center justify-center relative">
-              <div
-                className="absolute inset-0 opacity-10"
-                style={{
-                  backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, #c9a96e 40px, #c9a96e 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, #c9a96e 40px, #c9a96e 41px)`
-                }}
+            <div className="aspect-video w-full overflow-hidden">
+              <iframe
+                src="https://yandex.ru/map-widget/v1/?text=Южно-Сахалинск%2C%20ул.%20Мира%2C%20422&z=16&l=map"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                title="Карта ресторана Горький"
               />
-              <div className="relative text-center">
-                <div className="w-16 h-16 rounded-full bg-rose/20 border-2 border-rose flex items-center justify-center mx-auto mb-4">
-                  <Icon name="MapPin" size={28} className="text-rose" />
-                </div>
-                <p className="font-cormorant-sc text-xl text-deep-rose mb-1">Усадьба «Белый сад»</p>
-                <p className="font-cormorant text-rose/70 text-lg">Подмосковье, Можайское ш., 47</p>
-              </div>
             </div>
-            <div className="p-6 grid sm:grid-cols-3 gap-4">
-              {[
-                { icon: "Car" as IconName, title: "На автомобиле", desc: "45 мин от МКАД по Можайскому шоссе. Парковка бесплатная." },
-                { icon: "Train" as IconName, title: "На электричке", desc: "От Белорусского вокзала до ст. Звенигород, далее такси 10 мин." },
-                { icon: "Bus" as IconName, title: "Трансфер", desc: "Организуем автобус от м. Киевская в 13:00. Сообщите при RSVP." },
-              ].map((t, idx) => (
-                <div key={idx} className="text-center">
-                  <div className="w-10 h-10 rounded-full bg-rose/10 flex items-center justify-center mx-auto mb-2">
-                    <Icon name={t.icon} size={18} className="text-rose" />
-                  </div>
-                  <p className="font-cormorant-sc text-sm tracking-wide text-deep-rose mb-1">{t.title}</p>
-                  <p className="font-cormorant text-rose/70">{t.desc}</p>
-                </div>
-              ))}
+            <div className="p-6 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-rose/10 flex items-center justify-center flex-shrink-0">
+                <Icon name="MapPin" size={18} className="text-rose" />
+              </div>
+              <div>
+                <p className="font-cormorant-sc text-sm tracking-wide text-deep-rose">Ресторан «Горький»</p>
+                <p className="font-cormorant text-rose/70">Южно-Сахалинск, ул. Мира, 422</p>
+              </div>
             </div>
             <div className="px-6 pb-6">
               <a
-                href="https://yandex.ru/maps"
+                href="https://yandex.ru/maps/?text=Южно-Сахалинск%2C%20ул.%20Мира%2C%20422"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3 border border-gold/40 rounded-xl font-cormorant-sc text-sm tracking-widest text-rose hover:bg-rose hover:text-ivory transition-all duration-300"
