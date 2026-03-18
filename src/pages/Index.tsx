@@ -375,7 +375,6 @@ export default function Index() {
       <section id="rsvp" className="py-20 px-6">
         <Section className="max-w-2xl mx-auto">
           <div className="text-center mb-14">
-            <p className="font-caveat text-gold text-xl mb-2">ответить до 15 апреля 2026</p>
             <h2 className="font-cormorant-sc text-3xl md:text-4xl text-deep-rose">Подтвердите участие</h2>
             <Divider />
             <p className="font-cormorant text-lg text-rose/70">
