@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 
 type IconName = React.ComponentProps<typeof Icon>["name"];
 
-const HERO_IMAGE = "https://cdn.poehali.dev/projects/5f47c0fc-f12a-4e1c-a57b-fb5e9f136887/files/6ce43139-b9a0-4492-935e-73ca76f3a96a.jpg";
+const HERO_IMAGE = "https://cdn.poehali.dev/projects/5f47c0fc-f12a-4e1c-a57b-fb5e9f136887/bucket/d4d34601-a0c7-4b78-bf95-bda73125b130.jpg";
 
 const petals = Array.from({ length: 14 }, (_, i) => ({
   id: i,
