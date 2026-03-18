@@ -240,15 +240,20 @@ export default function Index() {
             {[
               { year: "2023", emoji: "🎶", title: "Встреча в ночном клубе", text: "Судьба свела нас в ночном клубе — один танец изменил всё. Именно тогда началась наша история." },
               { year: "2024", emoji: "🌴", title: "Первое путешествие", text: "В 2024 году мы вместе отправились в Таиланд — солнце, море и новые впечатления на двоих." },
-              { year: "2022", emoji: "💍", title: "Предложение", text: "На закате, у моря, Артём встал на колено. Анастасия сказала «да» — и звёзды зажглись ярче." },
+              { year: "2025", emoji: "💍", title: "Предложение", text: "Во вторую поездку в Таиланд, на горе с потрясающим видом на острова, Артём сделал предложение. Анастасия сказала «да»!", photo: "https://cdn.poehali.dev/projects/5f47c0fc-f12a-4e1c-a57b-fb5e9f136887/bucket/180bd4f2-bff3-4de4-8662-16f4b98bb061.jpg" },
               { year: "2026", emoji: "🕊️", title: "День свадьбы", text: "И вот настал момент, когда две жизни сольются в одну — навсегда и с любовью." },
             ].map((event, idx) => (
               <div key={idx} className={`flex gap-6 mb-10 ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
                 <div className="flex-1">
-                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gold/20 shadow-sm hover:shadow-md transition-shadow">
-                    <span className="font-cormorant-sc text-xs tracking-widest text-gold">{event.year}</span>
-                    <h3 className="font-cormorant-sc text-xl text-deep-rose mt-1 mb-2">{event.emoji} {event.title}</h3>
-                    <p className="font-cormorant text-rose/70 text-lg leading-relaxed">{event.text}</p>
+                  <div className="bg-white/60 backdrop-blur-sm rounded-2xl overflow-hidden border border-gold/20 shadow-sm hover:shadow-md transition-shadow">
+                    {"photo" in event && event.photo && (
+                      <img src={event.photo} alt={event.title} className="w-full h-56 object-cover" />
+                    )}
+                    <div className="p-6">
+                      <span className="font-cormorant-sc text-xs tracking-widest text-gold">{event.year}</span>
+                      <h3 className="font-cormorant-sc text-xl text-deep-rose mt-1 mb-2">{event.emoji} {event.title}</h3>
+                      <p className="font-cormorant text-rose/70 text-lg leading-relaxed">{event.text}</p>
+                    </div>
                   </div>
                 </div>
                 <div className="hidden md:flex w-8 flex-col items-center pt-6">
