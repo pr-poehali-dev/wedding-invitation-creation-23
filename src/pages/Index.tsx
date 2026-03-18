@@ -367,48 +367,7 @@ export default function Index() {
               </div>
             ))}
           </div>
-          <div className="mt-8 p-6 bg-gold/10 rounded-2xl border border-gold/30 text-center">
-            <Icon name="Shirt" size={20} className="text-gold mx-auto mb-2" />
-            <p className="font-cormorant-sc text-sm tracking-widest text-deep-rose mb-1">Дресс-код</p>
-            <p className="font-cormorant text-lg text-rose/80">Нежные, пастельные и светлые тона · Без чёрного цвета</p>
-          </div>
-        </Section>
-      </section>
 
-      {/* МЕНЮ */}
-      <section id="меню" className="py-20 px-6">
-        <Section className="max-w-3xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="font-caveat text-gold text-xl mb-2">праздничное</p>
-            <h2 className="font-cormorant-sc text-3xl md:text-4xl text-deep-rose">Меню</h2>
-            <Divider />
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              { title: "Закуски", icon: "Salad" as IconName, items: ["Тарталетки с лососем и крем-сыром", "Брускетта с томатами и базиликом", "Сырная доска с мёдом и орехами", "Canape ассорти"] },
-              { title: "Основные блюда", icon: "UtensilsCrossed" as IconName, items: ["Телячья вырезка в трюфельном соусе", "Лосось в лимонно-кремовом соусе", "Ризотто с белыми грибами", "Овощной тарт-татен"] },
-              { title: "Десерты", icon: "Cake" as IconName, items: ["Свадебный торт — малина и ваниль", "Макаронс ассорти", "Шоколадный фонтан с фруктами", "Мини-эклеры"] },
-              { title: "Напитки", icon: "Wine" as IconName, items: ["Игристое Prosecco DOC", "Вина красные и белые", "Авторские коктейли", "Свежевыжатые соки и воды"] },
-            ].map((cat, idx) => (
-              <div key={idx} className="bg-white/60 rounded-2xl p-6 border border-gold/20">
-                <div className="flex items-center gap-3 mb-4">
-                  <Icon name={cat.icon} size={18} className="text-gold" />
-                  <h3 className="font-cormorant-sc text-lg text-deep-rose tracking-wide">{cat.title}</h3>
-                </div>
-                <ul className="space-y-2">
-                  {cat.items.map((item, i) => (
-                    <li key={i} className="font-cormorant text-lg text-rose/70 flex gap-2">
-                      <span className="text-gold/60 mt-0.5">·</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-          <p className="text-center font-cormorant italic text-rose/60 text-lg mt-6">
-            Пожалуйста, сообщите о диетических предпочтениях при подтверждении присутствия
-          </p>
         </Section>
       </section>
 
@@ -416,7 +375,7 @@ export default function Index() {
       <section id="rsvp" className="py-20 px-6">
         <Section className="max-w-2xl mx-auto">
           <div className="text-center mb-14">
-            <p className="font-caveat text-gold text-xl mb-2">ответить до 1 мая 2026</p>
+            <p className="font-caveat text-gold text-xl mb-2">ответить до 15 апреля 2026</p>
             <h2 className="font-cormorant-sc text-3xl md:text-4xl text-deep-rose">Подтвердите участие</h2>
             <Divider />
             <p className="font-cormorant text-lg text-rose/70">
@@ -481,14 +440,10 @@ export default function Index() {
           <p className="font-cormorant italic text-ivory/60 text-lg">
             «И пусть каждый ваш день будет наполнен любовью,<br />как этот — нашей благодарностью к вам»
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 mt-8">
-            <a href="tel:+79001234567" className="flex items-center justify-center gap-2 font-cormorant text-gold-light hover:text-ivory transition-colors">
+          <div className="flex justify-center mt-8">
+            <a href="tel:+79147643359" className="flex items-center justify-center gap-2 font-cormorant text-gold-light hover:text-ivory transition-colors">
               <Icon name="Phone" size={16} />
-              +7 900 123-45-67
-            </a>
-            <a href="mailto:wedding@example.com" className="flex items-center justify-center gap-2 font-cormorant text-gold-light hover:text-ivory transition-colors">
-              <Icon name="Mail" size={16} />
-              wedding@example.com
+              +7 914 764-33-59
             </a>
           </div>
           <p className="font-cormorant-sc text-xs tracking-widest text-ivory/30 mt-8">С любовью ✦ 2026</p>
